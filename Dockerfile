@@ -20,36 +20,37 @@ ENV ANDROID_NDK=/opt/ndk/android-ndk-r$NDK_VERSION
 ENV PATH=${ANDROID_NDK}:${ANDROID_HOME}/emulator:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:/opt/buck/bin/:${PATH}
 
 # Install system dependencies
+RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt update -qq && apt install -qq -y --no-install-recommends \
-        apt-transport-https \
-        curl \
-        build-essential \
-        file \
-        git \
-        openjdk-8-jre \
-        gnupg2 \
-        python \
-        openssh-client \
-        unzip \
+    apt-transport-https \
+    curl \
+    build-essential \
+    file \
+    git \
+    openjdk-8-jre \
+    gnupg2 \
+    python \
+    openssh-client \
+    unzip \
     && rm -rf /var/lib/apt/lists/*;
 
 # install latest Ruby using ruby-install
 RUN apt-get update -qq \
-  && apt-get install -qq -y --no-install-recommends \
-          bison \
-          zlib1g-dev \
-          libyaml-dev \
-          libssl-dev \
-          libgdbm-dev \
-          libreadline-dev \
-          libncurses5-dev \
-          libffi-dev \
-  && curl -L https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz | tar -zxvf - -C /tmp/ \
-  && cd /tmp/ruby-install-* \
-  && make install \
-  && ruby-install --latest --system --cleanup ruby \
-  && gem install bundler -N \
-  && rm -rf /var/lib/apt/lists/*
+    && apt-get install -qq -y --no-install-recommends \
+    bison \
+    zlib1g-dev \
+    libyaml-dev \
+    libssl-dev \
+    libgdbm-dev \
+    libreadline-dev \
+    libncurses5-dev \
+    libffi-dev \
+    && curl -L https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz | tar -zxvf - -C /tmp/ \
+    && cd /tmp/ruby-install-* \
+    && make install \
+    && ruby-install --latest --system --cleanup ruby \
+    && gem install bundler -N \
+    && rm -rf /var/lib/apt/lists/*
 
 # install nodejs and yarn packages from nodesource and yarn apt sources
 RUN echo "deb https://deb.nodesource.com/node_${NODE_VERSION} stretch main" > /etc/apt/sources.list.d/nodesource.list \
@@ -79,12 +80,12 @@ RUN curl -sS https://dl.google.com/android/repository/${SDK_VERSION} -o /tmp/sdk
     && rm /tmp/sdk.zip \
     && yes | sdkmanager --licenses \
     && yes | sdkmanager "platform-tools" \
-        "emulator" \
-        "platforms;android-28" \
-        "platforms;android-$ANDROID_BUILD_VERSION" \
-        "build-tools;28.0.3" \
-        "build-tools;$ANDROID_TOOLS_VERSION" \
-        "add-ons;addon-google_apis-google-23" \
-        "system-images;android-19;google_apis;armeabi-v7a" \
-        "extras;android;m2repository" \
+    "emulator" \
+    "platforms;android-28" \
+    "platforms;android-$ANDROID_BUILD_VERSION" \
+    "build-tools;28.0.3" \
+    "build-tools;$ANDROID_TOOLS_VERSION" \
+    "add-ons;addon-google_apis-google-23" \
+    "system-images;android-19;google_apis;armeabi-v7a" \
+    "extras;android;m2repository" \
     && rm -rf /opt/android/.android
