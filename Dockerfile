@@ -20,8 +20,9 @@ ENV ANDROID_NDK=/opt/ndk/android-ndk-r$NDK_VERSION
 ENV PATH=${ANDROID_NDK}:${ANDROID_HOME}/emulator:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:/opt/buck/bin/:${PATH}
 
 # Install system dependencies
+RUN apt-get install  -qq -y --no-install-recommends software-properties-common
 RUN add-apt-repository ppa:openjdk-r/ppa
-RUN apt update -qq && apt install -qq -y --no-install-recommends \
+RUN apt-get update -qq && apt-get install -qq -y --no-install-recommends \
     apt-transport-https \
     curl \
     build-essential \
